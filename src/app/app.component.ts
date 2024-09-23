@@ -11,13 +11,21 @@ import { MainComponent } from './main/main.component';
 import { ContactComponent } from './contact/contact.component';
 import { CommonModule } from '@angular/common';
 //import { FormComponent } from './form/form.component';
+import { SimulatorComponent } from './simulator/simulator.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CalculatorComponent } from './calculator/calculator.component';
+import { MatButtonModule } from '@angular/material/button';
+
+
+
 
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule,RouterModule,RouterOutlet,MainComponent,ReviewsComponent,PartenariatComponent,AboutComponent,ServicesComponent,QaComponent,TeamComponent,ContactComponent],
+  imports: [CommonModule,RouterModule,RouterOutlet,MainComponent,ReviewsComponent,PartenariatComponent,AboutComponent,ServicesComponent,QaComponent,TeamComponent,ContactComponent, CalculatorComponent,MatStepperModule,SimulatorComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   //schemas: [CUSTOM_ELEMENTS_SCHEMA] 

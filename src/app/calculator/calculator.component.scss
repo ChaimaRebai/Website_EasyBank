@@ -1,0 +1,363 @@
+/* Style du formulaire */
+#regForm {
+  background-color: #ffffff;
+  margin: 100px auto;
+  padding: 40px;
+  width: 70%;
+  min-width: 300px;
+}
+
+/* Style les champs input */
+input {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+}
+
+/* Indique les champs en erreur */
+input.invalid {
+  background-color: #ffdddd;
+}
+
+/* Cache toutes les étapes par défaut */
+.tab {
+  display: none;
+}
+
+/* Les cercles indiquant les étapes du formulaire */
+.step {
+  height: 20px;
+  width: 20px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+/* Étape active */
+.step.active {
+  opacity: 1;
+}
+
+/* Étapes terminées et valides */
+.step.finish {
+  background-color: #4bbf76;
+}
+
+/* Style pour les boutons */
+.btn,
+.btn:focus {
+  color: black;
+  background: #4bbf76;
+  font-size: 14px;
+  padding: 8px 25px;
+  margin: 0 0 0 30px;
+  border-radius: 50px;
+  transition: background-color 0.3s;
+}
+
+/* Hover sur les boutons */
+.btn:hover,
+.btn:focus:hover {
+  color: black;
+  background: color-mix(in srgb, #4bbf76, transparent 15%);
+}
+
+/* Media queries pour les écrans moyens */
+@media (max-width: 1200px) {
+  .btn {
+    order: 2;
+    margin: 0 15px 0 0;
+    padding: 6px 15px;
+  }
+
+  /* Réduire la largeur du formulaire sur les écrans moyens */
+  #regForm {
+    width: 85%;
+  }
+}
+
+/* Media queries pour les petits écrans */
+@media (max-width: 768px) {
+  /* Adapter le formulaire sur mobile */
+  #regForm {
+    width: 95%;
+    margin: 50px auto;
+    padding: 20px;
+  }
+
+  /* Adapter les champs input */
+  input {
+    font-size: 15px;
+  }
+
+  /* Adapter les boutons sur mobile */
+  .btn {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+  }
+}
+
+/* Radio buttons styles */
+/* Style pour les labels des options */
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+
+  /* Changement de style au survol */
+  &:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+  }
+}
+
+/* Cacher les boutons radio */
+input[type="radio"] {
+  display: none;
+}
+
+/* Le petit cercle à droite (dot) */
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ccc;
+  transition: background-color 0.3s;
+}
+
+/* Lorsqu'un bouton radio est sélectionné, appliquer ces styles au label correspondant */
+input[type="radio"]:checked + label.option {
+  background-color: #e0ffe0; /* Fond vert clair */
+  border-color: #4caf50; /* Bordure verte */
+}
+
+input[type="radio"]:checked + label.option .dot {
+  background-color: #4caf50; /* Dot devient vert */
+}
+
+/* Media queries pour les options sur petit écran */
+@media (max-width: 768px) {
+  .option {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .dot {
+    margin-top: 10px;
+  }
+}
+
+
+// step 2
+
+/* Style des groupes de formulaire */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Style des labels */
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 16px;
+  //font-weight: bold;
+}
+
+/* Style des éléments de saisie avec unité */
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  transition: border-color 0.3s;
+}
+
+.input-wrapper:hover {
+  border-color: #999;
+}
+
+.form-control {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  transition: background-color 0.3s;
+}
+
+.form-control:focus {
+  background-color: #f0f0f0;
+}
+
+.currency {
+  margin-left: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Style pour les champs invalides */
+.is-invalid {
+  background-color: #ffdddd;
+  border: 1px solid #e6a0a0;
+}
+
+.invalid-feedback {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+
+//select your bank 
+.form-group {
+  margin-bottom: 1.5rem;
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  select {
+    //width: 100%;
+    padding: 0.5rem;
+    border: 2px solid #ccc; /* Couleur et épaisseur de la bordure */
+    border-radius: 4px; /* Ajoute un effet arrondi à la bordure */
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optionnel : ajoute une ombre légère */
+    outline: none;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: #007bff; /* Couleur de la bordure en cas de focus */
+    }
+  }
+}
+
+
+
+
+.form-group {
+  margin-bottom: 1.5rem;
+  
+  .wrap {
+    display: flex;
+    justify-content: space-between; /* Aligne les éléments Yes et No côte à côte */
+    margin-top: 0.5rem; /* Espace entre la question et les options */
+  }
+
+  .option-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px; /* Coins arrondis */
+    padding: 0.5rem 1rem; /* Espacement à l'intérieur */
+    flex: 1; /* Permet à chaque option de prendre la moitié de l'espace disponible */
+    margin: 0 0.5rem; /* Espacement entre les options Yes et No */
+    text-align: center; /* Centre le texte à l'intérieur */
+    cursor: pointer; /* Change le curseur pour indiquer que c'est cliquable */
+    transition: background-color 0.3s ease; /* Transition pour hover */
+
+    &:hover {
+      background-color: #f0f0f0; /* Change de couleur au survol */
+    }
+  }
+
+  input[type="radio"] {
+    display: none; /* Masque les boutons radio pour laisser uniquement les labels visibles */
+  }
+
+  label.option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    justify-content: space-between; /* Espace entre le texte et la "dot" */
+    width: 100%;
+  }
+
+  .dot {
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    border: 2px solid #ccc; /* Bordure autour de la pastille */
+    margin-left: 8px; /* Espace entre le texte et la pastille */
+  }
+
+  input[type="radio"]:checked + label .dot {
+    background-color: #4caf50; /* Couleur de la pastille quand l'option est sélectionnée */
+    border-color: #4caf50; /* Bordure de la pastille sélectionnée */
+  }
+}
+
+
+// step 6
+
+.congratulations-message {
+  text-align: center;
+  padding: 30px;
+  background-color: #f7f9fc; // Light background color
+  border: 2px solid #ececec;
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  color: #333; // Text color
+  font-family: 'Arial', sans-serif;
+
+  h2 {
+      font-size: 2rem;
+      color: #2d85d3; // Primary color for headings
+      margin-bottom: 20px;
+  }
+
+  .payment-info {
+      font-size: 1.2rem;
+      color: #4caf50; // Green to emphasize the monthly payment
+      margin-bottom: 20px;
+  }
+
+  .info-text {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #666; // Slightly muted text color for the body
+      margin-bottom: 30px;
+  }
+
+  .contact-info {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+
+      strong {
+          color: #2d85d3; // Accent color for contact information
+      }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+      padding: 20px;
+      
+      h2 {
+          font-size: 1.5rem;
+      }
+
+      .payment-info, .info-text, .contact-info {
+          font-size: 0.9rem;
+      }
+  }
+}
