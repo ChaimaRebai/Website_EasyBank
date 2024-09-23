@@ -1,3 +1,99 @@
+//form simulator 
+var currentTab = 0; // Current tab is set to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+function showTab(n) {
+  // This function will display the specified tab of the form ...
+  var x = document.getElementsByClassName("tab");
+  x[n].style.display = "block";
+  // ... and fix the Previous/Next buttons:
+  if (n == 0) {
+    document.getElementById("prevBtn").style.display = "none";
+  } else {
+    document.getElementById("prevBtn").style.display = "inline";
+  }
+  if (n == (x.length - 1)) {
+    document.getElementById("nextBtn").innerHTML = "Submit";
+  } else {
+    document.getElementById("nextBtn").innerHTML = "Next";
+  }
+  // ... and run a function that displays the correct step indicator:
+  fixStepIndicator(n)
+}
+
+function nextPrev(n) {
+  // This function will figure out which tab to display
+  var x = document.getElementsByClassName("tab");
+  // Exit the function if any field in the current tab is invalid:
+  if (n == 1 && !validateForm()) return false;
+  // Hide the current tab:
+  x[currentTab].style.display = "none";
+  // Increase or decrease the current tab by 1:
+  currentTab = currentTab + n;
+  // if you have reached the end of the form... :
+  if (currentTab >= x.length) {
+    //...the form gets submitted:
+    document.getElementById("regForm").submit();
+    return false;
+  }
+  // Otherwise, display the correct tab:
+  showTab(currentTab);
+}
+
+
+
+function validateForm() {
+  // Cette fonction gère la validation des champs du formulaire
+  var x, y, i, valid = true;
+  x = document.getElementsByClassName("tab");
+  y = x[currentTab].getElementsByTagName("input");
+  
+  // Vérifier si une option radio est sélectionnée
+  var radiosChecked = false;
+  for (i = 0; i < y.length; i++) {
+    if (y[i].type === "radio") {
+      if (y[i].checked) {
+        radiosChecked = true; // Un bouton radio est coché
+        break;
+      }
+    }
+  }
+
+  // Si aucune option n'a été sélectionnée et qu'il y a des boutons radio
+  if (!radiosChecked && y.length > 0 && y[0].type === "radio") {
+    alert("Please select an option before continuing.  يرجى اختيار خيار قبل المتابعة");
+    valid = false;
+  }
+
+  // Vérifie si tous les autres champs (non radio) sont remplis
+  for (i = 0; i < y.length; i++) {
+    if (y[i].type !== "radio" && y[i].value == "") {
+      y[i].className += " invalid"; // Ajoute une classe invalid si vide
+      valid = false;
+    }
+  }
+
+  // Si la validation est réussie, marque l'étape comme terminée
+  if (valid) {
+    document.getElementsByClassName("step")[currentTab].className += " finish";
+  }
+  return valid; // Retourne le statut valid
+}
+
+
+function fixStepIndicator(n) {
+  // This function removes the "active" class of all steps...
+  var i, x = document.getElementsByClassName("step");
+  for (i = 0; i < x.length; i++) {
+    x[i].className = x[i].className.replace(" active", "");
+  }
+  //... and adds the "active" class to the current step:
+  x[n].className += " active";
+}
+
+
+
+
 // Change navbar background on scroll
 window.addEventListener('scroll', function () {
   const header = document.querySelector('.header');
@@ -270,3 +366,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('scroll', navmenuScrollspy);
   
   })();
+
+
+  
