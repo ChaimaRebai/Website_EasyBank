@@ -10,7 +10,7 @@ import { CalculatorComponent } from './calculator/calculator.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import{SimulatorComponent} from './simulator/simulator.component';
+import { SimulatorComponent } from './simulator/simulator.component';
 
 
 
@@ -22,8 +22,9 @@ export const routes: Routes = [
     { path: 'conatct', component: ContactComponent } ,
     { path: 'qa', component: QaComponent},
     //{ path: 'form',component: FormComponent , data: { title: 'Form' }} ,
-   { path: 'loan-calculator', component: CalculatorComponent }
-  // { path: 'loan-calculator', component: SimulatorComponent } 
+   // { path: 'loan-calculator', component: CalculatorComponent }
+    { path: 'loan-calculator', component: SimulatorComponent }
+
 
 
 

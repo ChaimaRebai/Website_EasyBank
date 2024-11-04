@@ -1,35 +1,35 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators,} from '@angular/forms';
+import {FormBuilder, FormControl, Validators,} from '@angular/forms';
 import {MatStepper} from '@angular/material/stepper';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import Swal from 'sweetalert2';
-import { CommonModule } from '@angular/common';
-
 import {EmployeService} from '../shared/services/employe.service';
 import {CompanyService} from '../shared/services/company.service';
 import {SimulationService} from '../shared/services/simulation.service';
-
 import {Router} from '@angular/router';
 import {MatMenuTrigger} from "@angular/material/menu";
 import { appconstants } from '../shared/constant';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelectChange } from '@angular/material/select';
+import { MatStepperModule} from '@angular/material/stepper';
 import { TranslateService } from '@ngx-translate/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+
 
 
 @Component({
   selector: 'app-simulator',
   standalone: true,
-  imports: [CommonModule, MatStepperModule, ReactiveFormsModule],
   templateUrl: './simulator.component.html',
-  styleUrl: './simulator.component.scss',
+  styleUrls: ['./simulator.component.scss'],
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: {showError: false},
+      useValue: { showError: false },
     },
-    MatStepper,
   ],
+  imports: [CommonModule, MatStepperModule, ReactiveFormsModule],
 })
 export class SimulatorComponent implements OnInit {
   banquesList: any;
@@ -46,15 +46,15 @@ export class SimulatorComponent implements OnInit {
   isauto = false;
   isImmobiler = false;
   isLinear = true;
-  minapport: number = 0;
-  apportPercent: number = 0;
-  maxAnnee: number =0;
+  minapport!: number;
+  apportPercent!: number;
+  maxAnnee!: number;
   currentMontant: number = 0;
   duree: number = 1;
   apportPersonnel: number = 0;
-  favoriteSeason: string ='';
-  @ViewChild(MatMenuTrigger, {static: false}) trigger: MatMenuTrigger| null = null;
-  recheckIfInMenu: boolean = false;
+  favoriteSeason!: string;
+  @ViewChild(MatMenuTrigger, {static: false}) trigger!: MatMenuTrigger;
+  recheckIfInMenu!: boolean;
   banques: string[] = [
     'Société Tunisienne de Banque « STB »',
     'Banque Nationale Agricole « BNA »',
@@ -80,14 +80,14 @@ export class SimulatorComponent implements OnInit {
     'Union Bancaire de Commerce et d’Industrie «  UBCI »',
     'Union Internationale de Banque «  UIB »',
   ];
-  statusForm: FormGroup;
-  natureCreditForm: FormGroup;
-  revenuForm: FormGroup;
-  montantForm: FormGroup;
-  banqueForm: FormGroup;
-  prospectForm: FormGroup;
-  simulationForm: FormGroup;
-  secondFormGroup: FormGroup;
+  statusForm!: FormGroup;
+  natureCreditForm!: FormGroup;
+  revenuForm!: FormGroup;
+  montantForm!: FormGroup;
+  banqueForm!: FormGroup;
+  prospectForm!: FormGroup;
+  simulationForm!: FormGroup;
+  secondFormGroup!: FormGroup;
   @ViewChild('stepper') private stepper!: MatStepper;
 
   langue=[
@@ -98,28 +98,21 @@ export class SimulatorComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-   
-    private router: Router,
-    private translateService: TranslateService    
+    private EmpService: EmployeService,
+    private companyService: CompanyService,
+    private simulationService: SimulationService,
+    private router: Router
+    ,private translateService: TranslateService    
   ) {
-    this.statusForm = this.formBuilder.group({});
-    this.natureCreditForm = this.formBuilder.group({});
-    this.revenuForm = this.formBuilder.group({});
-    this.montantForm = this.formBuilder.group({});
-    this.banqueForm = this.formBuilder.group({});
-    this.prospectForm = this.formBuilder.group({});
-    this.simulationForm = this.formBuilder.group({});
-    this.secondFormGroup = this.formBuilder.group({});
-
     translateService.addLangs(['en','ar']);
     translateService.setDefaultLang('en');
     this.translateService.use(localStorage.getItem("lang") ?? 'en');
+
   }
 
   ngOnInit(): void {
-    
-    //this.getAllCompnaies();
-    //this.getAllBanks();
+    this.getAllCompnaies();
+    this.getAllBanks();
     this.statusForm = new FormGroup({
       select: new FormControl('', [Validators.required]),
     });
@@ -187,13 +180,13 @@ export class SimulatorComponent implements OnInit {
   }
 
   openResourceMenu() {
-    this.trigger?.openMenu();
+    this.trigger.openMenu();
   }
 
   closeResourceMenu() {
     setTimeout(() => {
       if (this.recheckIfInMenu === false) {
-        this.trigger?.closeMenu();
+        this.trigger.closeMenu();
       }
     }, 150);
   }
@@ -446,54 +439,132 @@ export class SimulatorComponent implements OnInit {
     
    
   }
-
-  setBuble(range: HTMLInputElement, bubble: HTMLElement) {
-    const val = range.valueAsNumber; // Utilisez valueAsNumber pour obtenir la valeur en nombre
-    const min = range.min ? Number(range.min) : 0;
-    const max = range.max ? Number(range.max) : 100;
-    const newVal = Number(((val - min) * 100) / (max - min));
-    bubble.textContent = val + '%'; // Utilisez textContent pour les éléments non input
-    this.apportPercent = val;
+ 
   
-    const newValue = Number(
-        ((range.valueAsNumber - min) * 100) / (max - min)
-      ),
-      newPosition = 10 - newValue * 0.2;
+  setBubble(range: HTMLInputElement, bubble: HTMLOutputElement) {
+    const val = Number(range.value);
+    const min = Number(range.min) || 0;  
+    const max = Number(range.max) || 100;  
+    const newValue = ((val - min) * 100) / (max - min);
+    
+    bubble.value = val + '%';  
+    const newPosition = 10 - newValue * 0.2;
     bubble.style.left = `calc(${newValue}% + (${newPosition}px))`;
-  
+
     this.apportPersonnel = (this.currentMontant / 100) * val;
-    this.apportPersonnel = Number(this.apportPersonnel.toFixed(2));
+    this.apportPersonnel = Number(this.apportPersonnel.toFixed(2));  
+}
+
+
+
+inpmontant(e: Event) {
+  const inputElement = e.target as HTMLInputElement; 
+  console.log(inputElement.value); 
+  this.currentMontant = Number(inputElement.value); 
+  this.apportPersonnel = (this.currentMontant / 100) * this.apportPercent; 
+  this.apportPersonnel = Number(this.apportPersonnel.toFixed(2)); 
+}
+
+
+setDuree(range: HTMLInputElement, bubble: HTMLOutputElement) {
+  const val = range.value; 
+  const str = val === '1' ? ' an' : ' ans'; 
+  bubble.value = val + str; // Met à jour la valeur de l'élément output
+  this.duree = Number(val); 
+
+  const newValue = Number(
+      ((Number(range.value) - Number(range.min)) * 100) / (Number(range.max) - Number(range.min))
+  );
+  const newPosition = 10 - newValue * 0.2;
+  bubble.style.left = `calc(${newValue}% + (${newPosition}px))`;
+}
+
+
+
+  saveProspect() {
+    this.submitted = true;
+    this.simulationForm.patchValue(this.prospectForm.value);
+    this.simulationForm.patchValue({type: 'normal'});
+    if (this.simulationForm.valid) {
+      this.simulationService
+        .saveSimulation(this.simulationForm.value)
+        .then((res: any) => {
+          if (res.error) {
+            if (res.error.error === 'Email existe déjà') {
+              Swal.mixin({
+                customClass: {confirmButton: 'btn btn-success'},
+              }).fire({
+                // title: 'Are you sure?',
+                text: res.error.error,
+                icon: 'error',
+
+                confirmButtonText: 'Close',
+
+                reverseButtons: true,
+              });
+            }
+          } else {
+            Swal.mixin({
+              customClass: {confirmButton: 'btn btn-success'},
+            })
+              .fire({
+                // title: 'Are you sure?',
+                text: 'Simulation enregistrée avec succés',
+                icon: 'success',
+
+                confirmButtonText: 'Close',
+
+                reverseButtons: true,
+              })
+              .then((res) => {
+                if (res.isConfirmed || res.isDismissed) {
+                  // this.getAllEmployes();
+                  // this.modalService.dismissAll();
+                  this.onReset();
+                  this.router.navigate(['/']);
+                }
+              });
+          }
+        });
+    } else {
+      Swal.mixin({
+        customClass: {confirmButton: 'btn btn-success'},
+      }).fire({
+        // title: 'Are you sure?',
+        text: 'Veuillez remplir tous les chapms SVP',
+        icon: 'error',
+
+        confirmButtonText: 'Close',
+
+        reverseButtons: true,
+      });
+    }
   }
-  
-  inpmontant(e: Event) {
-    const inputElement = e.target as HTMLInputElement;
-    console.log(inputElement.value);
-    this.currentMontant = Number(inputElement.value);
-    this.apportPersonnel = (this.currentMontant / 100) * this.apportPercent;
-    this.apportPersonnel = Number(this.apportPersonnel.toFixed(2));
+
+  getAllBanks() {
+    this.companyService.getBanks().then((res: any) => {
+      console.log('all banks: ', res);
+      if (res.status) {
+        this.banquesList = res.data.results.reverse();
+      }
+    });
+
+    this.banquesList =appconstants.banks;
   }
-  
-  setDuree(range: HTMLInputElement, bubble: HTMLElement) {
-    const val = range.valueAsNumber;
-    const str = val === 1 ? ' an' : ' ans';
-    bubble.textContent = val + str;
-    this.duree = val;
-    const newValue = Number(
-        ((range.valueAsNumber - Number(range.min)) * 100) / (Number(range.max) - Number(range.min))
-      ),
-      newPosition = 10 - newValue * 0.2;
-    bubble.style.left = `calc(${newValue}% + (${newPosition}px))`;
+
+  getAllCompnaies() {
+    this.companyService.getCompanies().then((res: any) => {
+      console.log('all compnaies: ', res);
+      if (res.status) {
+        this.listEntreprises = res.data.results.reverse();
+      }
+    });
   }
-  
 
+  onItemChange(e: MatSelectChange) {
+    console.log(e.value);
+}
 
-
-
-
-  onItemChange(e: Event) {
-    const target = e.target as HTMLSelectElement;
-    console.log(target.value);
-  }
 
   get f() {
     return this.prospectForm.controls;
@@ -515,4 +586,3 @@ export class SimulatorComponent implements OnInit {
     this.revenuForm.reset();
   }
 }
-
